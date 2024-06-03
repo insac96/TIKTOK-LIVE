@@ -1,6 +1,6 @@
 <template>
   <UContainer class="Layout" :ui="{ constrained: 'max-w-3xl', padding: 'px-2 sm:px-4 lg:px-6' }">
-    <div class="Layout__BG"></div>
+    <div class="Layout__BG" style="background-image: url(images/MobileBGTop.png), url(images/MobileBGBot.png)"></div>
     <slot></slot>
   </UContainer>
 </template>
@@ -21,7 +21,6 @@
     width: 100%
     height: 100%
     aspect-ratio: 1 / 1
-    background-image: url(images/MobileBGTop.png), url(images/MobileBGBot.png)
     background-repeat: no-repeat, no-repeat
     background-size: 40%, 40%
     background-position: left top, right bottom
