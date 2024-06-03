@@ -1,7 +1,7 @@
 <template>
   <UiFlex class="z-[1] grow max-h-full py-2" type="col">
-    <div class="w-full mb-2 bg-transparent backdrop-blur-xl" v-if="!!room && !!streamer">
-      <UCard :ui="{ background: '', body: { padding: 'px-2 py-2 sm:px-2 sm:py-2' } }">
+    <div class="w-full mb-2 " v-if="!!room && !!streamer">
+      <UCard :ui="{ background: 'dark:bg-transparent backdrop-blur-xl', body: { padding: 'px-2 py-2 sm:px-2 sm:py-2' } }">
         <UiFlex>
           <UAvatar :src="streamer.avatar" alt="Avatar" size="md" />
 
@@ -16,34 +16,64 @@
       </UCard>
     </div>
 
-    <UCard id="BoxMessage" class="w-full grow overflow-hidden bg-transparent backdrop-blur-xl" :ui="{ background: '', body: { padding: 'px-0 py-0 sm:px-0 sm:py-0' } }">
-      <UiFlex type="col" items="flex-start" class="gap-5 p-2 pr-0">
+    <UCard id="BoxMessage" class="w-full grow overflow-hidden" :ui="{ background: 'dark:bg-transparent backdrop-blur-xl', body: { padding: 'px-0 py-0 sm:px-0 sm:py-0' } }">
+      <UiFlex type="col" items="flex-start" class="gap-5 p-2">
         <UiFlex items="flex-start" v-for="item in messages" :key="item.id" >
           <UAvatar :src="item.user.avatar" alt="Avatar" size="md" />
 
-          <div class="ml-2">
-            <UiText color="primary" weight="bold" size="sm" class="mb-1">{{ item.user.nickname }}</UiText>
-            <div class="bg-gray-800 py-2 px-3 rounded-xl rounded-ss-none text-sm">
+          <UiFlex type="col" items="flex-start" class="ml-2">
+            <UiText color="primary" weight="bold" size="xs" class="mb-1">{{ item.user.nickname }}</UiText>
+            <div class="bg-gray-800 py-2 px-3 rounded-xl rounded-ss-none text-sm w-fit">
               {{ item.message }}
             </div>
-          </div>
+          </UiFlex>
         </UiFlex>
       </UiFlex>
     </UCard>
 
-    <div class="w-full mt-2 bg-transparent backdrop-blur-xl">
-      <UCard class="overflow-y-visible" :ui="{ background: '', body: { padding: 'px-2 py-2 sm:px-2 sm:py-2' } }">
+    <div class="w-full mt-2">
+      <UCard class="overflow-y-visible" :ui="{ background: 'dark:bg-transparent backdrop-blur-xl', body: { padding: 'px-2 py-2 sm:px-2 sm:py-2' } }">
         <UiFlex class="gap-0.5">
-          <UButton class="mr-0.5" :color="!config.onSpeak ? 'gray' : 'green'" icon="i-bx-user-voice" @click="config.onSpeak = !config.onSpeak">
-            {{ !!config.onSpeak ? 'Tắt' : 'Bật' }}
-          </UButton>
-
-          <USelectMenu v-if="!!config.onSpeak" v-model="voiceSelect" value-attribute="value" :options="voices" />
+          <UButtonGroup>
+            <UButton :color="!config.onSpeak ? 'gray' : 'green'" icon="i-bx-user-voice" @click="config.onSpeak = !config.onSpeak">
+              {{ !!config.onSpeak ? 'Tắt' : 'Bật' }}
+            </UButton>
+            <UButton v-if="!!config.onSpeak" icon="i-bx-cog" color="gray" square @click="modal = true"></UButton>
+          </UButtonGroup>
 
           <UButton class="ml-auto"  color="red" icon="i-bx-power-off" square @click="disconnect"></UButton>
         </UiFlex>
       </UCard>
     </div>
+
+    <UModal v-model="modal">
+      <UCard>
+        <UiFlex class="mb-4" justify="between">
+          <UiText color="gray" size="sm">Giọng đọc</UiText>
+          <USelectMenu v-model="voiceSelect" value-attribute="value" :options="voices" />
+        </UiFlex>
+
+        <UiFlex class="mb-6" justify="between">
+          <UiText color="gray" size="sm">Đọc người bình luận</UiText>
+          <UToggle v-model="config.listSpeak.chat" />
+        </UiFlex>
+
+        <UiFlex class="mb-6" justify="between">
+          <UiText color="gray" size="sm">Đọc người tặng quà</UiText>
+          <UToggle v-model="config.listSpeak.gift" />
+        </UiFlex>
+
+        <UiFlex class="mb-6" justify="between">
+          <UiText color="gray" size="sm">Đọc người theo dõi</UiText>
+          <UToggle v-model="config.listSpeak.follow" />
+        </UiFlex>
+
+        <UiFlex justify="between">
+          <UiText color="gray" size="sm">Đọc người chia sẻ</UiText>
+          <UToggle v-model="config.listSpeak.share" />
+        </UiFlex>
+      </UCard>
+    </UModal>
   </UiFlex>
 </template>
 
@@ -53,21 +83,21 @@ useSeoMeta({
 })
 const { $socket } = useNuxtApp()
 const { success, error } = useNotify()
+const modal = ref(false)
 
 const room = ref(undefined)
 const streamer = ref(undefined)
-const reloadInfoProcess = ref(undefined)
 
 const messages = ref([])
 
 const voices = ref([
-  { label: 'Giọng Nữ Vừa', type: 'vi-VN-Neural2-A', sex: 'FEMALE', value: 0 },
-  { label: 'Giọng Nam Vừa', type: 'vi-VN-Standard-B', sex: 'MALE', value: 1 },
-  { label: 'Giọng Nữ Trầm', type: 'vi-VN-Standard-A', sex: 'FEMALE', value: 2 },
-  { label: 'Giọng Nam Trầm', type: 'vi-VN-Neural2-D', sex: 'MALE', value: 3 },
-  { label: 'Giọng Nữ Cao', type: 'vi-VN-Wavenet-C', sex: 'FEMALE', value: 4 },
+  { label: 'Nữ Vừa', type: 'vi-VN-Neural2-A', sex: 'FEMALE', value: 0 },
+  { label: 'Nam Vừa', type: 'vi-VN-Standard-B', sex: 'MALE', value: 1 },
+  { label: 'Nữ Trầm', type: 'vi-VN-Standard-A', sex: 'FEMALE', value: 2 },
+  { label: 'Nam Trầm', type: 'vi-VN-Neural2-D', sex: 'MALE', value: 3 },
+  { label: 'Nữ Cao', type: 'vi-VN-Wavenet-C', sex: 'FEMALE', value: 4 },
 ])
-const voiceSelect = ref(0)
+const voiceSelect = ref(4)
 
 const audio = ref({
   source: undefined,
@@ -81,11 +111,16 @@ const config = ref({
   maxMessage: 200,
   reloadTime: 5000,
   delaySpeak: 500,
-  onSpeak: false
+  onSpeak: false,
+  listSpeak: {
+    chat: true,
+    gift: true,
+    follow: false,
+    share: false
+  }
 })
 
 const autoSpeak = () => {
-
   if(!!autoSpeakProcess.value) return
   autoSpeakProcess.value = setInterval(() => {
     if(!!audio.value.source) return // Đang có Audio được phát
@@ -106,13 +141,6 @@ const toBottom = () => {
   box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' })
 }
 
-const reloadInfo = () => {
-  if(!!reloadInfoProcess.value) return
-  reloadInfoProcess.value = setInterval(() => {
-    $socket.emit('live-info')
-  }, config.value.reloadTime)
-}
-
 const disconnect = () => {
   $socket.emit('live-disconnect')
 }
@@ -127,7 +155,6 @@ onMounted(() => {
   $socket.on('live-start-success', (message) => {
     success(message)
     $socket.emit('live-info')
-    reloadInfo()
     autoSpeak()
   })
 
@@ -143,9 +170,9 @@ onMounted(() => {
   // Live Disconnect
   $socket.on('live-disconnect', (message) => {
     error(message)
-    if(!!reloadInfoProcess.value){
-      clearInterval(reloadInfoProcess.value)
-      reloadInfoProcess.value = null
+    if(!!autoSpeakProcess.value){
+      clearInterval(autoSpeakProcess.value)
+      autoSpeakProcess.value = null
     }
     navigateTo('/')
   })
@@ -166,15 +193,29 @@ onMounted(() => {
       if(data.type == 'chat'){
         content = `${data.user.nickname}     ${data.message}`
       }
-      if(data.type == 'gift'){
+      else if(data.type == 'gift'){
         content = `Cảm ơn ${data.user.nickname} đã ${data.message}`
       }
+      else if(data.type == 'follow'){
+        content = `Cảm ơn ${data.user.nickname} ${data.message}`
+      }
+      else if(data.type == 'share'){
+        content = `Cảm ơn ${data.user.nickname} ${data.message}`
+      }
+      else {
+        return
+      }
 
-      audioMessage.value.push({ id: data.id, message: content })
+      if(!!config.value.listSpeak[data.type]) audioMessage.value.push({ id: data.id, message: content })
     }
 
     // Auto To Bottom
     setTimeout(() => toBottom(), 100)
+  })
+
+  // Live View
+  $socket.on('live-view', (data) => {
+    if(!!room.value) return room.value.view = data
   })
 
   // Google Speak

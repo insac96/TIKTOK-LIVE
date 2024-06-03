@@ -43,8 +43,7 @@ onMounted(() => {
     error(message)
   })
 
-  $socket.on('live-connect-success', (message) => {
-    success(message)
+  $socket.on('live-connect-success', () => {
     navigateTo('/screen')
   })
 })

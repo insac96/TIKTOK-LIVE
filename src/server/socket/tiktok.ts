@@ -20,7 +20,7 @@ export default (io : SocketServer, socket : Socket, liveConnection : any) => {
       })
 
       await liveConnection.connect()
-      socket.emit('live-connect-success', 'Khởi tạo kết nối thành công')
+      socket.emit('live-connect-success')
     }
     catch(e){
       liveConnection = null
@@ -79,6 +79,44 @@ export default (io : SocketServer, socket : Socket, liveConnection : any) => {
         send.message = `Gửi tặng ${data.repeatCount} ${data.giftName}`
         socket.emit('live-message', send)
       }
+    })
+
+    liveConnection.on('share', (data : any) => {
+      const send = {
+        id: data.msgId,
+        user: {
+          id: Number(data.userId),
+          username: data.uniqueId,
+          nickname: data.nickname,
+          avatar: data.profilePictureUrl
+        },
+        message: 'Đã chia sẻ phiên live',
+        time: data.createTime,
+        type: 'share'
+      }
+
+      socket.emit('live-message', send)
+    })
+
+    liveConnection.on('follow', (data : any) => {
+      const send = {
+        id: data.msgId,
+        user: {
+          id: Number(data.userId),
+          username: data.uniqueId,
+          nickname: data.nickname,
+          avatar: data.profilePictureUrl
+        },
+        message: 'Đã theo dõi',
+        time: data.createTime,
+        type: 'follow'
+      }
+
+      socket.emit('live-message', send)
+    })
+
+    liveConnection.on('roomUser', (data :any) => {
+      socket.emit('live-view', data.viewerCount)
     })
 
     liveConnection.on('streamEnd', () => {
