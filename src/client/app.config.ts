@@ -110,6 +110,7 @@ export default defineAppConfig({
     },
 
     select: {
+      rounded: 'rounded-xl',
       default: {
         loadingIcon: 'i-bx-loader-alt'
       }

@@ -1,6 +1,6 @@
 <template>
   <UiFlex class="z-[1] grow max-h-full py-2" type="col">
-    <div class="w-full mb-2" v-if="!!room && !!streamer">
+    <div class="w-full mb-2 bg-transparent backdrop-blur-xl" v-if="!!room && !!streamer">
       <UCard :ui="{ background: '', body: { padding: 'px-2 py-2 sm:px-2 sm:py-2' } }">
         <UiFlex>
           <UAvatar :src="streamer.avatar" alt="Avatar" size="md" />
@@ -16,13 +16,13 @@
       </UCard>
     </div>
 
-    <UCard id="BoxMessage" class="w-full grow overflow-hidden" :ui="{ background: '', body: { padding: 'px-0 py-0 sm:px-0 sm:py-0' } }">
+    <UCard id="BoxMessage" class="w-full grow overflow-hidden bg-transparent backdrop-blur-xl" :ui="{ background: '', body: { padding: 'px-0 py-0 sm:px-0 sm:py-0' } }">
       <UiFlex type="col" items="flex-start" class="gap-5 p-2 pr-0">
         <UiFlex items="flex-start" v-for="item in messages" :key="item.id" >
           <UAvatar :src="item.user.avatar" alt="Avatar" size="md" />
 
           <div class="ml-2">
-            <UiText color="primary" weight="semibold" size="xs" class="mb-1">{{ item.user.nickname }}</UiText>
+            <UiText color="primary" weight="bold" size="sm" class="mb-1">{{ item.user.nickname }}</UiText>
             <div class="bg-gray-800 py-2 px-3 rounded-xl rounded-ss-none text-sm">
               {{ item.message }}
             </div>
@@ -31,14 +31,14 @@
       </UiFlex>
     </UCard>
 
-    <div class="w-full mt-2">
+    <div class="w-full mt-2 bg-transparent backdrop-blur-xl">
       <UCard class="overflow-y-visible" :ui="{ background: '', body: { padding: 'px-2 py-2 sm:px-2 sm:py-2' } }">
         <UiFlex class="gap-0.5">
-          <UButton class="mr-1" :color="!config.onSpeak ? 'gray' : 'green'" icon="i-bx-user-voice" @click="config.onSpeak = !config.onSpeak">
+          <UButton class="mr-0.5" :color="!config.onSpeak ? 'gray' : 'green'" icon="i-bx-user-voice" @click="config.onSpeak = !config.onSpeak">
             {{ !!config.onSpeak ? 'Tắt' : 'Bật' }}
           </UButton>
 
-          <USelectMenu v-model="voiceSelect" value-attribute="value" :options="voices" />
+          <USelectMenu v-if="!!config.onSpeak" v-model="voiceSelect" value-attribute="value" :options="voices" />
 
           <UButton class="ml-auto"  color="red" icon="i-bx-power-off" square @click="disconnect"></UButton>
         </UiFlex>
@@ -48,6 +48,9 @@
 </template>
 
 <script setup>
+useSeoMeta({
+  title: () => `Screen - Tiktok Live Speak`,
+})
 const { $socket } = useNuxtApp()
 const { success, error } = useNotify()
 

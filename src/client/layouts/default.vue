@@ -23,7 +23,7 @@
     aspect-ratio: 1 / 1
     background-image: url(images/MobileBGTop.png), url(images/MobileBGBot.png)
     background-repeat: no-repeat, no-repeat
-    background-size: 35%, 35%
+    background-size: 40%, 40%
     background-position: left top, right bottom
     z-index: 0
 </style>
