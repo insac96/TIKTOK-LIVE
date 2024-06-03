@@ -3,11 +3,12 @@ import { WebcastPushConnection } from 'tiktok-live-connector'
 
 export default (io : SocketServer, socket : Socket, liveConnection : any) => {
   // Connect Live
-  socket.on('live-connect', async (streamerID) => {
+  socket.on('live-connect', async (id) => {
     try {
-      if(!streamerID) return socket.emit('live-connect-error', 'Vui lòng nhập thông tin ID phòng')
+      if(!id) return socket.emit('live-connect-error', 'Vui lòng nhập thông tin ID phòng')
       if(!!liveConnection) return socket.emit('live-connect-error', 'Đã có kết nối vào phiên live này')
       
+      const streamerID = id.toLowerCase().trim()
       liveConnection = new WebcastPushConnection(streamerID, {
         processInitialData: true,
         enableExtendedGiftInfo: true,
