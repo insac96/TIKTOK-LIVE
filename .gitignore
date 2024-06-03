@@ -1,0 +1,14 @@
+.output
+.nuxt
+.nitro
+.cache
+.DS_Store
+.fleet
+.idea
+.ex
+.env
+node_modules
+package-lock.json
+dist/server
+
+
