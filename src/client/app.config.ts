@@ -24,6 +24,10 @@ export default defineAppConfig({
       }
     },
 
+    buttonGroup: {
+      rounded: 'rounded-xl',
+    },
+
     barge: {
       rounded: 'rounded-xl',
     },

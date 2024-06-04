@@ -41,6 +41,8 @@
             <UButton v-if="!!config.onSpeak" icon="i-bx-cog" color="gray" square @click="modal = true"></UButton>
           </UButtonGroup>
 
+          <USelectMenu v-if="!!config.onSpeak" v-model="voiceSelect" value-attribute="value" :options="voices" />
+
           <UButton class="ml-auto"  color="red" icon="i-bx-power-off" square @click="disconnect"></UButton>
         </UiFlex>
       </UCard>

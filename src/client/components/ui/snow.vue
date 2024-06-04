@@ -1,34 +1,21 @@
-
 <template>
-  <UContainer class="Layout" :ui="{ constrained: 'max-w-3xl', padding: 'px-2 sm:px-4 lg:px-6' }">
-    <div class="Layout__BG" style="background-image: url(images/Quynh.png), url(images/MobileBGBot.png), url(images/MobileBGTop.png)"></div>
-    <slot></slot>
-
-    <UiSnow />
-  </UContainer>
+  <div class="snowflakes" aria-hidden="true">
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+    <div class="snowflake">❅</div>
+    <div class="snowflake">❆</div>
+  </div>
 </template>
 
 <style lang="sass">
-.Layout
-  height: 100%
-  min-height: 100%
-  max-height: 100%
-  display: flex
-  flex-direction: column
-  overflow: hidden
-  background-color: rgb(0, 0, 0)
-  &__BG
-    position: fixed
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    aspect-ratio: 1 / 1
-    background-repeat: no-repeat, no-repeat, no-repeat
-    background-size: auto 40%, auto 40%, auto 40%
-    background-position: left bottom, right bottom, left top
-    z-index: 0
-
 @keyframes snowflakes-fall
   0%
     top: -10%
