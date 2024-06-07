@@ -117,8 +117,8 @@ const config = ref({
   listSpeak: {
     chat: true,
     gift: true,
-    follow: false,
-    share: false
+    follow: true,
+    share: true
   }
 })
 
@@ -149,7 +149,13 @@ const disconnect = () => {
 
 const isBanText = (data) => {
   const text = data.toLowerCase()
-  const ban = ['chem chép', 'lồn', 'buồi', 'cặc', 'bướm', 'chim', 'tiktok', 'tóp tóp', 'cấm live', 'tắt live', 'cảnh báo']
+  const ban = [
+    'chem chép', 'lồn', 'bướm', 'bú',
+    'buồi', 'cặc', 'chim', 'cu',
+    'tiktok', 'tóp tóp', 
+    'cấm live', 'tắt live', 'cảnh báo', 'cấm', 'vi phạm',
+    'địt', 
+  ]
   let is = false
   ban.forEach(i => {
     const position = text.search(i)
@@ -159,6 +165,13 @@ const isBanText = (data) => {
   })
 
   return is
+}
+
+const isOnlyEmoji = (data) => {
+  const pattern = /[A-Za-z0-9]/gm
+  const result = pattern.test(data)
+  if(!result) return true
+  return false
 }
 
 onMounted(() => {
@@ -206,7 +219,9 @@ onMounted(() => {
     // Add Message Speak
     if(!!config.value.onSpeak){
       let content
+      
       if(data.type == 'chat'){
+        if(!!isOnlyEmoji(data.message)) return
         content = `${data.user.nickname}. ${data.message}`
       }
       else if(data.type == 'gift'){
@@ -221,8 +236,8 @@ onMounted(() => {
       else {
         return
       }
-      
-      if(!!isBanText(content)) return false
+
+      if(!!isBanText(content)) return
       if(!!config.value.listSpeak[data.type]) audioMessage.value.push({ id: data.id, message: content })
     }
 
