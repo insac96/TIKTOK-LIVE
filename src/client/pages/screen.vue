@@ -147,6 +147,18 @@ const disconnect = () => {
   $socket.emit('live-disconnect')
 }
 
+const filterText = (data) => {
+  const text = data.toLowerCase()
+  const ban = ['chem chép', 'lồn', 'buồi', 'cặc', 'bướm', 'chim', 'tiktok', 'tóp tóp', 'cấp live', 'tắt live', 'cảnh báo']
+  let is = false
+  ban.forEach(i => {
+    const position = text.search(i);
+    is = true
+  })
+
+  return is
+}
+
 onMounted(() => {
   // Live Start
   $socket.emit('live-start')
@@ -207,6 +219,8 @@ onMounted(() => {
       else {
         return
       }
+
+      if(!filterText(content)) return
 
       if(!!config.value.listSpeak[data.type]) audioMessage.value.push({ id: data.id, message: content })
     }
