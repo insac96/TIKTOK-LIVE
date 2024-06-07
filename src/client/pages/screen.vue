@@ -207,7 +207,7 @@ onMounted(() => {
     if(!!config.value.onSpeak){
       let content
       if(data.type == 'chat'){
-        content = `${data.user.nickname}     ${data.message}`
+        content = `${data.user.nickname}. ${data.message}`
       }
       else if(data.type == 'gift'){
         content = `Cảm ơn ${data.user.nickname} đã ${data.message}`
@@ -221,7 +221,7 @@ onMounted(() => {
       else {
         return
       }
-
+      
       if(!!isBanText(content)) return false
       if(!!config.value.listSpeak[data.type]) audioMessage.value.push({ id: data.id, message: content })
     }
