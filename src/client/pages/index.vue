@@ -6,7 +6,7 @@
     </div>
 
     <UForm :state="state" @submit="start">
-      <UInput v-model="state.id" icon="i-bx-user" placeholder="Nhập ID Livestream" class="mb-2.5" />
+      <UInput v-model="state.id" icon="i-bx-user" placeholder="Nhập ID Livestream" disabled class="mb-2.5" />
 
       <UiFlex justify="center">
         <UButton :loading="loading" @click="start">Kết Nối</UButton>
