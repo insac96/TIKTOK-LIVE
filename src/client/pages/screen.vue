@@ -81,7 +81,7 @@
 
 <script setup>
 useSeoMeta({
-  title: () => `Screen - Tiktok Live Speak`,
+  title: () => `Screen - Tiktok Live`,
 })
 const { $socket } = useNuxtApp()
 const { success, error } = useNotify()

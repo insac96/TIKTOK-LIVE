@@ -6,7 +6,7 @@ export default (io : SocketServer, socket : Socket) => {
     if(!text) return false
     if(!voice) return false
 
-    const APIKey = 'AIzaSyAVg0AgA-g5yehiCVm9kYBV1fzVmwGdYD0'
+    const APIKey = 'AIzaSyC3I_a7mzlP5IvW9eUgEqXTqVhxj_MA2yk'
     const url = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${APIKey}`
     const headers = { 'Content-Type': 'application/json; charset=utf-8' }
     const body = {

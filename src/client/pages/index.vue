@@ -1,15 +1,18 @@
 <template>
   <UiFlex class="z-[1] grow" type="col" justify="center">
-    <div class="mb-5">
-      <UiText align="center" weight="bold" size="3xl" color="primary" class="mb-0.5">Tiktok Live Speak</UiText>
-      <UiText align="center" weight="semibold" size="sm" color="gray">Một sản phẩm của Chú Tú</UiText>
+    <div class="mb-6">
+      <UiFlex class="mb-1 gap-1" justify="center" align="center">
+        <UiText align="center" weight="bold" size="2xl" color="primary">Tiktok</UiText>
+        <UiText align="center" weight="bold" size="2xl" color="rose">Live</UiText>
+      </UiFlex>
+      <UiText align="center" weight="semibold" size="sm" color="gray">Một sản phẩm của Trần NQ.Anh</UiText>
     </div>
 
     <UForm :state="state" @submit="start">
-      <UInput v-model="state.id" icon="i-bx-user" placeholder="Nhập ID Livestream" disabled class="mb-2.5" />
+      <UInput v-model="state.id" icon="i-bx-user" placeholder="Nhập ID Livestream" class="mb-4" />
 
       <UiFlex justify="center">
-        <UButton :loading="loading" @click="start">Kết Nối</UButton>
+        <UButton :loading="loading" @click="start" icon="i-bx-station">Kết Nối</UButton>
       </UiFlex>
     </UForm>
   </UiFlex>
@@ -17,7 +20,7 @@
 
 <script setup>
 useSeoMeta({
-  title: () => 'Tiktok Live Speak',
+  title: () => 'Tiktok Live',
 })
 
 const { $socket } = useNuxtApp()
@@ -25,7 +28,7 @@ const { success, error } = useNotify()
 
 const loading = ref(false)
 const state = ref({
-  id: '12345suplo'
+  id: 'xuanhaydoi'
 })
 
 const start = () => {

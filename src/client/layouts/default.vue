@@ -1,10 +1,10 @@
 
 <template>
   <UContainer class="Layout" :ui="{ constrained: 'max-w-3xl', padding: 'px-2 sm:px-4 lg:px-6' }">
-    <div class="Layout__BG" style="background-image: url(images/Quynh.png), url(images/MobileBGBot.png), url(images/MobileBGTop.png)"></div>
+    <div class="Layout__BG" style="background-image: url(images/MobileBGBot.png), url(images/MobileBGTop.png)"></div>
     <slot></slot>
 
-    <UiSnow />
+    <!-- <UiSnow /> -->
   </UContainer>
 </template>
 
@@ -25,8 +25,8 @@
     height: 100%
     aspect-ratio: 1 / 1
     background-repeat: no-repeat, no-repeat, no-repeat
-    background-size: auto 40%, auto 40%, auto 40%
-    background-position: left bottom, right bottom, left top
+    background-size: auto 40%, auto 40%
+    background-position: right bottom, left top
     z-index: 0
 
 @keyframes snowflakes-fall
